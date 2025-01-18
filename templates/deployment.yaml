@@ -24,4 +24,4 @@ spec:
             - containerPort: 9090
           env:
             - name: username
-              value: "{{ .Values.vault.usernameSecret }}"
+              value: "{{ .Values.vault.userSec }}"
