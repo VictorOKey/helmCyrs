@@ -1,0 +1,39 @@
+replicaCount: 1
+
+image:
+  name: johnnytengu/demo-app
+  version: "1.0.0"
+  pullPolicy: IfNotPresent
+
+vault:
+  address: "http://vault:8200"
+  role: "test"
+  userSec: "vault:secret/data/webapp/config#username"
+
+service:
+  type: ClusterIP
+  port: 80
+  portName: "http"
+
+ingress:
+  enabled: true
+  annotations:
+    certManagerIssuer: "vault-issuer"
+  tls:
+    secretName: "quickstart-example-tls"
+  hosts:
+    - host: demo.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+          
+hpa:
+  min: 1
+  max: 3
+  metric: "http_requests_per_second" 
+  averageValue: "10"
+
+serviceMonitor:
+  enabled: true
+  interval: 1s
+  path: /metrics
