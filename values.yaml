@@ -37,3 +37,5 @@ serviceMonitor:
   enabled: true
   interval: 1s
   path: /metrics
+  
+podLabels: {}

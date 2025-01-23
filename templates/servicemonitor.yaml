@@ -1,17 +1,19 @@
-apiVersion monitoring.coreos.comv1
-kind ServiceMonitor
-metadata
-  name {{ .Release.Name }}-servicemonitor
-  labels
-    app {{ .Release.Name }}
-spec
-  selector
-    matchLabels
-      app {{ .Release.Name }}
-  endpoints
-    - port {{ .Values.service.portName }}
-      path {{ .Values.serviceMonitor.path }}
-      interval {{ .Values.serviceMonitor.interval }}
-  namespaceSelector
-    matchNames
+apiVersion: monitoring.coreos.comv1
+kind: ServiceMonitor
+metadata:
+  name: {{ .Release.Name }}-servicemonitor
+  labels:
+    app: {{ .Release.Name }}
+    labels:
+    {{- include "demo-app.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  endpoints:
+    - port: {{ .Values.service.portName }}
+      path: {{ .Values.serviceMonitor.path }}
+      interval: {{ .Values.serviceMonitor.interval }}
+  namespaceSelector:
+    matchNames:
       - {{ .Release.Namespace }}
